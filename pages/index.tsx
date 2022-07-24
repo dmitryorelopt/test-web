@@ -2,47 +2,32 @@ import React, { MouseEventHandler, useEffect, useState } from 'react';
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import { io, Socket } from "socket.io-client";
+import { useDispatch, useSelector } from 'react-redux';
 
 import styles from '../styles/Home.module.css'
+import { increment } from '../app/redux/counter/counterSlice';
+import { selectWSStatus, wsConnect } from '../app/redux/websocket/wSSlice';
+import { AppDispatch } from '../app/store';
 
 const Home: NextPage = () => {
-  const [socket, setSocket] = useState<Socket>();
-  const [isConnected, setIsConnected] = useState(false);
+  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    const newSocket = io('http://localhost:3000');
-
-    newSocket.on('connect', () => {
-      setIsConnected(true);
-    });
-
-    newSocket.on('exception', function(data) {
-      console.log('event', data);
-    });
-
-    newSocket.on('disconnect', function() {
-      console.log('Disconnected');
-
-      setIsConnected(false);
-    });
-
-    setSocket(newSocket);
-
-    return () => {
-      newSocket.off('connect');
-      newSocket.off('disconnect');
-      newSocket.off('pong');
-    };
+    dispatch(wsConnect('http://localhost:3000'));
   }, []);
+
+  const [message, setMessage] = useState('');
+  const wsStatus = useSelector(selectWSStatus);
 
   const sendFindAll: MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault();
 
-    socket?.emit('findAllUsers', (response: string) => {
-      console.log(response);
-    });
+    dispatch(increment());
   }
+
+  const sendMessage: MouseEventHandler<HTMLAnchorElement> = () => {
+
+  };
 
   return (
     <div className={styles.container}>
@@ -54,7 +39,7 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Connected: {isConnected ? 'Yes' : 'No'}
+          Connected: {wsStatus}
         </h1>
 
         <p className={styles.description}>
@@ -67,6 +52,17 @@ const Home: NextPage = () => {
             <h2>Documentation &rarr;</h2>
             <p>Find in-depth information about Next.js features and API.</p>
           </a>
+        </div>
+
+        <div className={styles.grid}>
+          <input
+            type="text"
+            placeholder="Enter message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+
+          <button onClick={() => console.log('send')}>Send</button>
         </div>
       </main>
 
