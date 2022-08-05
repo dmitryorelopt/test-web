@@ -6,18 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import styles from '../styles/Home.module.css'
 import { increment } from '../app/redux/counter/counterSlice';
-import { selectWSStatus, wsConnect } from '../app/redux/websocket/wSSlice';
 import { AppDispatch } from '../app/store';
 
 const Home: NextPage = () => {
   const dispatch: AppDispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(wsConnect('http://localhost:3000'));
-  }, []);
-
   const [message, setMessage] = useState('');
-  const wsStatus = useSelector(selectWSStatus);
 
   const sendFindAll: MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault();
@@ -39,7 +33,7 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Connected: {wsStatus}
+          Connected: да
         </h1>
 
         <p className={styles.description}>

@@ -1,6 +1,6 @@
 import { Middleware } from 'redux'
 
-const socketMiddleware: Middleware = store => next => action => {
+const testMiddleware: Middleware = store => next => action => {
   console.log('crashMiddleware');
   try {
     return next(action)
@@ -10,4 +10,4 @@ const socketMiddleware: Middleware = store => next => action => {
   }
 }
 
-export default socketMiddleware;
+export default testMiddleware;

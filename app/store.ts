@@ -1,17 +1,15 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 
 import counterReducer from './redux/counter/counterSlice'
-import socketMiddleware from './middleware/socketMiddleware'
-import { WSSlice } from './redux/websocket/wSSlice';
+import testMiddleware from './middleware/testMiddleware'
 
 export function makeStore() {
   return configureStore({
     reducer: {
       counter: counterReducer,
-      webSocket: WSSlice.reducer,
     },
     middleware: (getDefaultMiddleware) => {
-      return getDefaultMiddleware().concat([socketMiddleware])
+      return getDefaultMiddleware().concat([testMiddleware])
     },
   })
 }
