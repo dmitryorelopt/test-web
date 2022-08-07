@@ -1,12 +1,14 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 
-import counterReducer from './redux/counter/counterSlice'
-import testMiddleware from './middleware/testMiddleware'
+import counterReducer from './domen/counter/counter.slice'
+import testMiddleware from './middleware/test.middleware'
+import { loginSlice } from './domen/facebook/facebook.slice';
 
 export function makeStore() {
   return configureStore({
     reducer: {
       counter: counterReducer,
+      login: loginSlice.reducer,
     },
     middleware: (getDefaultMiddleware) => {
       return getDefaultMiddleware().concat([testMiddleware])

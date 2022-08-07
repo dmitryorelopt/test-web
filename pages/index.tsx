@@ -1,27 +1,23 @@
-import React, { MouseEventHandler, useEffect, useState } from 'react';
+import React, { MouseEventHandler, useState } from 'react';
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import styles from '../styles/Home.module.css'
-import { increment } from '../app/redux/counter/counterSlice';
+import styles from '../styles/home.module.css'
 import { AppDispatch } from '../app/store';
+import { loginAsync } from '../app/domen/facebook/facebook.slice';
 
 const Home: NextPage = () => {
   const dispatch: AppDispatch = useDispatch();
 
   const [message, setMessage] = useState('');
 
-  const sendFindAll: MouseEventHandler<HTMLAnchorElement> = (e) => {
+  const onLogin: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
 
-    dispatch(increment());
+    dispatch(loginAsync());
   }
-
-  const sendMessage: MouseEventHandler<HTMLAnchorElement> = () => {
-
-  };
 
   return (
     <div className={styles.container}>
@@ -42,13 +38,6 @@ const Home: NextPage = () => {
         </p>
 
         <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card} onClick={sendFindAll}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-        </div>
-
-        <div className={styles.grid}>
           <input
             type="text"
             placeholder="Enter message"
@@ -56,7 +45,7 @@ const Home: NextPage = () => {
             onChange={(e) => setMessage(e.target.value)}
           />
 
-          <button onClick={() => console.log('send')}>Send</button>
+          <a href="http://localhost:3000/facebook">login</a>
         </div>
       </main>
 
